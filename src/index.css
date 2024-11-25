@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.sidebar {
+  background-color: white; /* Initial color */
+  animation: background-color-transition 1s ease-in-out forwards;
+}
+
+@keyframes background-color-transition {
+  0% {
+    background-color: white; /* Start with white */
+  }
+  100% {
+    background-color: #e8f1fd; /* Transition to your desired color */
+  }
+}
