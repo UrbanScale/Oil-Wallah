@@ -1,11 +1,16 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 
 function Cart({ cartItems, setCartItems, setCount }) {
   const handleRemoveFromCart = (id) => {
     setCartItems((prevCart) => prevCart.filter((item) => item.id !== id));
     setCount((prev) => prev - 1);
+  };
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    navigate("/login");
   };
 
   const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
@@ -88,6 +93,7 @@ function Cart({ cartItems, setCartItems, setCount }) {
               hover:bg-white hover:text-green-500 hover:border-green-500
               transition duration-300 ease-in-out
             "
+            onClick={handleCheckout}
           >
             Checkout Now
           </button>

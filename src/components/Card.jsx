@@ -1,27 +1,22 @@
 import React from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { BsFillHandbagFill } from "react-icons/bs";
 
-function Home({ data, setCount, isLoggedIn , setCartItems }) {
+function Home({ data, setCount, isLoggedIn, setCartItems }) {
   const navigate = useNavigate();
+
   const handleCart = (item) => {
-    if (isLoggedIn) {
-      setCount((prev) => prev + 1);
-      setCartItems((prev) => [...prev, item])
-      
-      toast.success("Added to Cart!");
-    } else {
-      navigate("/login");
-    }
+    setCount((prev) => prev + 1);
+    setCartItems((prev) => [...prev, item]);
+
+    toast.success("Added to Cart!");
   };
+
   return (
-    <div className="p-4 md:ml-[18%] mt-20 ">
-      {" "}
-      {/* Added margin for desktop */}
+    <div className="p-4 md:ml-[18%] mt-20">
       {/* Grid Container for Cards */}
       <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {" "}
-        {/* Adjusted grid classes */}
         {data.map((item, index) => (
           <div
             key={index}
@@ -43,15 +38,15 @@ function Home({ data, setCount, isLoggedIn , setCartItems }) {
 
               {/* Button Section */}
               <button
-                className={`mt-4 w-full ${
+                className={`mt-4 w-full flex items-center justify-center gap-4 ${
                   item.added ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
                 } text-white py-2 rounded-full`}
-                onClick={()=>handleCart(item)}
+                onClick={() => handleCart(item)}
                 disabled={item.added}
               >
-                {item.added ? "Added to Cart" : "Add to Cart"}
+                <BsFillHandbagFill className="text-white" />
+                {item.added ? "Added to Bag" : "Add to Bag"}
               </button>
-             
             </div>
           </div>
         ))}

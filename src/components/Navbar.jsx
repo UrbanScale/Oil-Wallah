@@ -48,19 +48,16 @@ function Navbar({ toggleSidebar, isLoggedIn, setIsLoggedIn, count }) {
                   Login
                 </button>
               </NavLink>
-              <NavLink to="/signup">
-                <button className="text-white px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7]">
-                  Signup
-                </button>
-              </NavLink>
-            </>
-          ) : (
-            <>
+              
               <NavLink to="/cart">
                 <button className="text-white flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7]">
                   <CiShoppingCart className="mt-1" /> Cart {count}
                 </button>
               </NavLink>
+            </>
+          ) : (
+            <>
+              
 
               <button
                 className="text-white px-4 py-2 rounded-full bg-red-500 hover:bg-red-600"
