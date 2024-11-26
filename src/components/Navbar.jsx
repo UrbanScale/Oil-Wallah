@@ -1,13 +1,21 @@
 import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
-import { PiShoppingCartSimple } from "react-icons/pi";
-import { NavLink } from "react-router-dom"; // Ensure you are using react-router
-import { CiShoppingCart } from "react-icons/ci"; // Assuming you want this for cart
+import { CiShoppingCart } from "react-icons/ci"; // For cart icon
+import { NavLink, useNavigate } from "react-router-dom"; // Ensure you are using react-router
+import toast from "react-hot-toast";
 
-function Navbar({ toggleSidebar, isLoggedIn, handleLogout, cartItems }) {
+function Navbar({ toggleSidebar, isLoggedIn, setIsLoggedIn, count }) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    toast.error("Logged Out Successfully");
+    navigate("/");
+  };
+
   return (
-    <div className="w-full h-16 flex items-center justify-between px-4 shadow border-b bg-gray-100">
+    <div className="w-full h-16 flex items-center justify-between px-4 shadow-md border-b bg-gray-100 z-40 fixed top-0 left-0">
       {/* Logo Section */}
       <div className="flex items-center">
         <img
@@ -50,7 +58,7 @@ function Navbar({ toggleSidebar, isLoggedIn, handleLogout, cartItems }) {
             <>
               <NavLink to="/cart">
                 <button className="text-white flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7]">
-                  <CiShoppingCart className="mt-1" /> Cart {cartItems.length}
+                  <CiShoppingCart className="mt-1" /> Cart {count}
                 </button>
               </NavLink>
 
@@ -66,7 +74,7 @@ function Navbar({ toggleSidebar, isLoggedIn, handleLogout, cartItems }) {
 
         {/* Menu Icon (Mobile) */}
         <button
-          className="text-white text-2xl md:hidden"
+          className="text-gray-800 text-2xl md:hidden"
           onClick={toggleSidebar}
         >
           <FiMenu />

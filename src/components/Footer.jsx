@@ -1,15 +1,15 @@
-import React from "react";
 import {
   FaGooglePlay,
-  FaTwitter,
-  FaYoutube,
   FaInstagram,
   FaMapMarkerAlt,
+  FaTwitter,
+  FaYoutube,
 } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <div className="py-6 px-5  max-w-7xl  rounded-2xl bg-[#E8F1FD]  flex justify-between items-center">
+    <div className="py-6 px-5 max-w-5xl  w-full rounded-2xl bg-[#E8F1FD] flex justify-between items-center">
       {/* Profile Section */}
       <div className="flex items-center gap-4">
         <img
@@ -24,19 +24,19 @@ function Footer() {
         <h4 className="font-bold text-gray-800 mb-2">Quick Links</h4>
         <ul className="space-y-1">
           <li>
-            <a href="#terms" className="text-blue-600 hover:underline">
+            <Link to="/terms" className="text-blue-600 hover:underline">
               Terms & Conditions
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#privacy" className="text-blue-600 hover:underline">
+            <Link to="/privacy" className="text-blue-600 hover:underline">
               Privacy Policy
-            </a>
+            </Link>
           </li>
           <li>
-            <a href="#refunds" className="text-blue-600 hover:underline">
+            <Link to="/refunds" className="text-blue-600 hover:underline">
               Refunds & Cancellation Policy
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

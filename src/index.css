@@ -1,6 +1,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 .sidebar {
   background-color: white; /* Initial color */
   animation: background-color-transition 1s ease-in-out forwards;

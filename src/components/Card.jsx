@@ -1,8 +1,21 @@
 import React from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
-function Home({ data }) {
+function Home({ data, setCount, isLoggedIn , setCartItems }) {
+  const navigate = useNavigate();
+  const handleCart = (item) => {
+    if (isLoggedIn) {
+      setCount((prev) => prev + 1);
+      setCartItems((prev) => [...prev, item])
+      
+      toast.success("Added to Cart!");
+    } else {
+      navigate("/login");
+    }
+  };
   return (
-    <div className="p-4 md:ml-[18%]">
+    <div className="p-4 md:ml-[18%] mt-20 ">
       {" "}
       {/* Added margin for desktop */}
       {/* Grid Container for Cards */}
@@ -33,11 +46,12 @@ function Home({ data }) {
                 className={`mt-4 w-full ${
                   item.added ? "bg-gray-500" : "bg-blue-600 hover:bg-blue-700"
                 } text-white py-2 rounded-full`}
-                onClick={() => console.log(`${item.name} clicked`)}
+                onClick={()=>handleCart(item)}
                 disabled={item.added}
               >
                 {item.added ? "Added to Cart" : "Add to Cart"}
               </button>
+             
             </div>
           </div>
         ))}

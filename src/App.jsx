@@ -9,6 +9,7 @@ import Contect from "./pages/Contect";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import TermsAndConditions from "./pages/TermsAndConditions";
 
 function App() {
   const Raw = [
@@ -18,7 +19,73 @@ function App() {
       name: "Adivasi Hair Oil",
       price: 1000,
       added: false,
+      id: 1,
     },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 1000,
+      added: false,
+      id: 2,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 1000,
+      added: false,
+      id: 3,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 1000,
+      added: false,
+      id: 4,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 1000,
+      added: false,
+      id: 5,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 2000,
+      added: false,
+      id: 6,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 9000,
+      added: false,
+      id: 7,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 7000,
+      added: false,
+      id: 8,
+    },
+    {
+      image:
+        "https://rukminim2.flixcart.com/image/612/612/xif0q/hair-oil/n/o/4/250-neelgiri-herbal-hair-oil-hair-growth-hair-oil-adivasi-original-imah3mwjgbqm4kvq.jpeg?q=70",
+      name: "Adivasi Hair Oil",
+      price: 1000,
+      added: false,
+      id: 9,
+    },
+
     // Add more items as needed
   ];
 
@@ -27,15 +94,11 @@ function App() {
   const [isSidebarOpen, setSidebarOpen] = useState(false); // Sidebar toggle state
   const [isLoggedIn, setIsLoggedIn] = useState(false); // User login status
   const [cartItems, setCartItems] = useState([]); // Cart items state
+  const [count, setCount] = useState(0);
 
   // Sidebar toggle function
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
-  };
-
-  // Function to handle login
-  const handleLogin = () => {
-    setIsLoggedIn(true);
   };
 
   // Function to handle logout
@@ -60,30 +123,49 @@ function App() {
         <Navbar
           toggleSidebar={toggleSidebar}
           isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
           cartItems={cartItems}
+          count={count}
           handleLogout={handleLogout}
         />
 
         {/* Content Area */}
-        <div className="flex-1 bg-gray-100">
+        <div className="flex flex-1 flex-col bg-gray-100">
           <Routes>
             <Route
               path="/"
-              element={<Home data={data} addToCart={addToCart} />}
+              element={
+                <Home
+                  data={data}
+                  setCount={setCount}
+                  isLoggedIn={isLoggedIn}
+                  addToCart={addToCart}
+                  setCartItems={setCartItems}
+                  cartItems={cartItems}
+                />
+              }
             />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contect />} />
-            <Route path="/cart" element={<Cart cartItems={cartItems} />} />
+            <Route
+              path="/cart"
+              element={
+                <Cart setCartItems={setCartItems} setCount={setCount} cartItems={cartItems} />
+              }
+            />
             <Route
               path="/login"
-              element={<Login  setIsLoggedIn={setIsLoggedIn} />}
+              element={<Login setIsLoggedIn={setIsLoggedIn} />}
             />
             <Route path="/signup" element={<Signup />} />
+            <Route path="/term" element={<TermsAndConditions />} />
           </Routes>
         </div>
 
         {/* Footer */}
-        <Footer />
+        <div className="flex justify-center items-center">
+          <Footer />
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 function Login({ setIsLoggedIn }) {
@@ -10,6 +11,7 @@ function Login({ setIsLoggedIn }) {
     e.preventDefault();
     console.log("Email:", email, "Password:", password);
     setIsLoggedIn(true);
+    toast.success("Logged In");
     navigate("/");
 
     // Add your login logic here
