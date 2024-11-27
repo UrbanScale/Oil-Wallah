@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { RiDeleteBin7Fill } from "react-icons/ri";
 
-function Cart({ cartItems, setCartItems, setCount }) {
+function Cart({ cartItems, setCartItems, setCount  }) {
   const handleRemoveFromCart = (id) => {
     setCartItems((prevCart) => prevCart.filter((item) => item.id !== id));
     setCount((prev) => prev - 1);
