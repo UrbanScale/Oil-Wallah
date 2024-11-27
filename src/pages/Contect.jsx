@@ -2,7 +2,7 @@ import React from 'react'
 
 function Contect() {
   return (
-    <div>Contect</div>
+    <div> hello niru kase ho tum ??</div>
   )
 }
 
