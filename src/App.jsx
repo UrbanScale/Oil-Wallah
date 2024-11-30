@@ -10,6 +10,7 @@ import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import TermsAndConditions from "./pages/TermsAndConditions";
+import AddressSaver from "./pages/AddressSaver";
 
 function App() {
   const Raw = [
@@ -95,7 +96,17 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false); // User login status
   const [cartItems, setCartItems] = useState([]); // Cart items state
   const [count, setCount] = useState(0);
-
+  const [addressSaved, setAddressSaved] = useState(false);
+  const [address, setAddress] = useState({
+    name: "",
+    mobileNumber: "",
+    pinCode: "",
+    houseAddress: "",
+    locality: "",
+    city: "",
+    state: "",
+  });
+console.log(address)
   // Sidebar toggle function
   const toggleSidebar = () => {
     setSidebarOpen((prev) => !prev);
@@ -150,7 +161,7 @@ function App() {
             <Route
               path="/cart"
               element={
-                <Cart setCartItems={setCartItems} setCount={setCount} cartItems={cartItems} />
+                <Cart   setCartItems={setCartItems} setCount={setCount} address={address}  addressSaved={addressSaved} setAddressSaved={setAddressSaved}cartItems={cartItems} />
               }
             />
             <Route
@@ -159,6 +170,7 @@ function App() {
             />
             <Route path="/signup" element={<Signup />} />
             <Route path="/term" element={<TermsAndConditions />} />
+            <Route path="/address" element={<AddressSaver address={address} setAddress={setAddress} addressSaved={addressSaved} setAddressSaved={setAddressSaved}></AddressSaver>} />
           </Routes>
         </div>
 

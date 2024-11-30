@@ -1,54 +1,30 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
-
+  const navigate = useNavigate();
   // Function to handle OTP sending
-  const handleSendOtp = async () => {
+  const handleSendOtp = () => {
     if (mobileNumber.length === 10) {
-      try {
-        const response = await fetch("http://localhost:3001/send-otp", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ mobileNumber: `+91${mobileNumber}` }),
-        });
-        const data = await response.json();
-        if (response.ok) {
-          alert(data.message);
-          setOtpSent(true);
-        } else {
-          alert(data.message);
-        }
-      } catch (error) {
-        alert("Error sending OTP. Please try again.");
-      }
+      alert("OTP sent successfully!");
+      setOtpSent(true);
+      
     } else {
       alert("Enter a valid 10-digit mobile number.");
     }
+
   };
 
   // Function to handle OTP verification
-  const handleVerifyOtp = async () => {
-    try {
-      const response = await fetch("http://localhost:3001/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mobileNumber: `+91${mobileNumber}`, otp }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        alert(data.message);
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      alert("Error verifying OTP. Please try again.");
+  const handleVerifyOtp = () => {
+    if (otp === "1234") {
+      alert("OTP verified successfully! You are logged in.");
+      navigate('/address')
+    } else {
+      alert("Invalid OTP. Please try again.");
     }
   };
 
@@ -81,7 +57,7 @@ const LoginPage = () => {
             <input
               type="text"
               className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none"
-              placeholder="Enter OTP"
+              placeholder="Enter OTP (Default: 1234)"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />

@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import PropTypes from "prop-types"; // Import PropTypes
 import { RiDeleteBin7Fill } from "react-icons/ri";
 
-function Cart({ cartItems, setCartItems, setCount  }) {
+function Cart({ cartItems, setCartItems, setCount, address, addressSaved }) {
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Replace with actual login state from context or props
+  const navigate = useNavigate();
+
+  // Remove item from cart
   const handleRemoveFromCart = (id) => {
     setCartItems((prevCart) => prevCart.filter((item) => item.id !== id));
     setCount((prev) => prev - 1);
   };
-  const navigate = useNavigate();
-
+  const { name, mobileNumber, pinCode, houseAddress, locality, city, state } =
+    address;
+  // Handle Checkout Navigation
   const handleCheckout = () => {
-    navigate("/login");
+    if (!isLoggedIn) {
+      navigate("/login");
+    } else if (isLoggedIn && !addressSaved) {
+      navigate("/address");
+    } else if (isLoggedIn && addressSaved) {
+      navigate("/payment");
+    }
   };
 
+  // Calculate total amount
   const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
 
   return (
@@ -76,6 +89,21 @@ function Cart({ cartItems, setCartItems, setCount  }) {
             Items in Cart: {cartItems.length}
           </h2>
 
+          {addressSaved && address && (
+            <div className="bg-gray-100 p-4 rounded-lg shadow-sm mb-4">
+              <h3 className="font-bold text-gray-800 mb-2">
+                Delivery Address:
+              </h3>
+              <p className="text-gray-600">Name: {name}</p>
+              <p className="text-gray-600">Mobile Number: {mobileNumber}</p>
+              <p className="text-gray-600">House: {houseAddress}</p>
+              <p className="text-gray-600">Locality: {locality}</p>
+              <p className="text-gray-600">City: {city}</p>
+              <p className="text-gray-600">State: {state}</p>
+              <p className="text-gray-600">Pincode: {pinCode}</p>
+            </div>
+          )}
+
           <hr className="my-4" />
           <div className="flex justify-between font-bold text-gray-800">
             <span>Total:</span>
@@ -102,5 +130,42 @@ function Cart({ cartItems, setCartItems, setCount  }) {
     </div>
   );
 }
+
+// PropTypes for validation
+Cart.propTypes = {
+  cartItems: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  setCartItems: PropTypes.func.isRequired,
+  setCount: PropTypes.func.isRequired,
+  address: PropTypes.shape({
+    name: PropTypes.string,
+    mobileNumber: PropTypes.string,
+    pinCode: PropTypes.string,
+    houseAddress: PropTypes.string,
+    locality: PropTypes.string,
+    city: PropTypes.string,
+    state: PropTypes.string,
+  }),
+  addressSaved: PropTypes.bool.isRequired,
+};
+
+// Default Props
+Cart.defaultProps = {
+  address: {
+    name: "",
+    mobileNumber: "",
+    pinCode: "",
+    houseAddress: "",
+    locality: "",
+    city: "",
+    state: "",
+  },
+};
 
 export default Cart;
