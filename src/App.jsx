@@ -132,6 +132,7 @@ console.log(address)
       <div className="flex flex-col w-full">
         {/* Navbar */}
         <Navbar
+        setAddressSaved={setAddressSaved}
           toggleSidebar={toggleSidebar}
           isLoggedIn={isLoggedIn}
           setIsLoggedIn={setIsLoggedIn}
@@ -161,7 +162,7 @@ console.log(address)
             <Route
               path="/cart"
               element={
-                <Cart   setCartItems={setCartItems} setCount={setCount} address={address}  addressSaved={addressSaved} setAddressSaved={setAddressSaved}cartItems={cartItems} />
+                <Cart   setCartItems={setCartItems} setCount={setCount} address={address}  addressSaved={addressSaved} setAddressSaved={setAddressSaved}cartItems={cartItems} isLoggedIn={isLoggedIn} />
               }
             />
             <Route

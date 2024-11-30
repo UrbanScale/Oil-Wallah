@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const AddressSaver = ({
   setAddressSaved,
@@ -48,8 +49,7 @@ const AddressSaver = ({
   };
 
   // Function to save the address
-  const handleSaveAddress = () => {
-    // console.log("Current Address State:", address); // Debugging state
+  const handleSaveAddress = async () => {
     const { name, mobileNumber, pinCode, houseAddress, locality, city, state } =
       address;
 
@@ -62,12 +62,26 @@ const AddressSaver = ({
       city &&
       state
     ) {
-      setAddressSaved(true);
-      navigate("/cart");
+      setIsFetching(true); // Set fetching state to true
+
+      try {
+        // Send a POST request to the backend API to save the address
+        const response = await axios.post(
+          "http://localhost:4000/api/address/save", // Replace with your backend URL if different
+          address
+        );
+        console.log(response.data); // This will log the response from the backend (e.g., success message)
+        setAddressSaved(true); // Set address as saved
+        navigate("/cart"); // Navigate to another page (cart, or wherever you want after saving)
+      } catch (error) {
+        console.error("Error saving address:", error);
+        alert("Failed to save address. Please try again.");
+      } finally {
+        setIsFetching(false); // Reset fetching state
+      }
     } else {
       alert("Please fill all fields correctly.");
     }
-    // console.log(address);
   };
 
   return (

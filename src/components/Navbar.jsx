@@ -5,13 +5,20 @@ import { CiShoppingCart } from "react-icons/ci";
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
 
-function Navbar({ toggleSidebar, isLoggedIn, setIsLoggedIn, count }) {
+function Navbar({
+  toggleSidebar,
+  isLoggedIn,
+  setIsLoggedIn,
+  count,
+  setAddressSaved,
+}) {
   const navigate = useNavigate();
   const location = useLocation(); // Get current route
 
   // Handle Logout
   const handleLogout = () => {
     setIsLoggedIn(false);
+    setAddressSaved(false);
     toast.error("Logged Out Successfully");
     navigate("/"); // Navigate to home page after logout
   };

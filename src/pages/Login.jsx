@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ setIsLoggedIn }) => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const navigate = useNavigate();
+
   // Function to handle OTP sending
   const handleSendOtp = () => {
     if (mobileNumber.length === 10) {
       alert("OTP sent successfully!");
       setOtpSent(true);
-      
     } else {
       alert("Enter a valid 10-digit mobile number.");
     }
-
   };
 
   // Function to handle OTP verification
   const handleVerifyOtp = () => {
     if (otp === "1234") {
       alert("OTP verified successfully! You are logged in.");
-      navigate('/address')
+      setIsLoggedIn(true); // Set login state to true
+      navigate("/address");
     } else {
       alert("Invalid OTP. Please try again.");
     }
@@ -35,7 +35,9 @@ const LoginPage = () => {
         {!otpSent ? (
           <>
             <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden mb-4">
-              <span className="px-3 bg-gray-100 text-gray-600 font-medium">+91</span>
+              <span className="px-3 bg-gray-100 text-gray-600 font-medium">
+                +91
+              </span>
               <input
                 type="text"
                 className="flex-1 p-3 focus:outline-none"
