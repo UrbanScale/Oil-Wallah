@@ -8,23 +8,20 @@ const AddressSaver = ({
   setAddress,
   address,
 }) => {
-  const [isFetching, setIsFetching] = useState(false); // State for tracking API call
+  const [isFetching, setIsFetching] = useState(false);
   const navigate = useNavigate();
 
-  // Function to handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAddress((prev) => ({ ...prev, [name]: value }));
 
-    // Trigger API call if the pin code is entered
     if (name === "pinCode" && value.length === 6) {
       fetchCityAndState(value);
     }
   };
 
-  // Function to fetch city and state based on pin code
   const fetchCityAndState = async (pinCode) => {
-    setIsFetching(true); // Set fetching state
+    setIsFetching(true);
     try {
       const response = await fetch(
         `https://api.postalpincode.in/pincode/${pinCode}`
@@ -44,11 +41,10 @@ const AddressSaver = ({
       console.error("Error fetching city and state:", error);
       alert("Unable to fetch location details. Please try again later.");
     } finally {
-      setIsFetching(false); // Reset fetching state
+      setIsFetching(false);
     }
   };
 
-  // Function to save the address
   const handleSaveAddress = async () => {
     const { name, mobileNumber, pinCode, houseAddress, locality, city, state } =
       address;
@@ -62,22 +58,20 @@ const AddressSaver = ({
       city &&
       state
     ) {
-      setIsFetching(true); // Set fetching state to true
-
+      setIsFetching(true);
       try {
-        // Send a POST request to the backend API to save the address
         const response = await axios.post(
-          "http://localhost:4000/api/address/save", // Replace with your backend URL if different
+          "http://localhost:4000/api/address/save",
           address
         );
-        console.log(response.data); // This will log the response from the backend (e.g., success message)
-        setAddressSaved(true); // Set address as saved
-        navigate("/cart"); // Navigate to another page (cart, or wherever you want after saving)
+        console.log(response.data);
+        setAddressSaved(true);
+        navigate("/cart");
       } catch (error) {
         console.error("Error saving address:", error);
         alert("Failed to save address. Please try again.");
       } finally {
-        setIsFetching(false); // Reset fetching state
+        setIsFetching(false);
       }
     } else {
       alert("Please fill all fields correctly.");
@@ -85,14 +79,13 @@ const AddressSaver = ({
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-pink-50">
-      <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
+    <div className="flex justify-center items-center min-h-screen bg-pink-50 p-4">
+      <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg sm:max-w-lg mt-16 md:max-w-xl">
         <h2 className="text-2xl font-bold mb-4 text-center text-pink-600">
           Add New Address
         </h2>
         {!addressSaved ? (
           <>
-            {/* Contact Details Section */}
             <h3 className="text-lg font-semibold mb-3 text-pink-600">
               Contact Details
             </h3>
@@ -113,8 +106,6 @@ const AddressSaver = ({
               onChange={handleChange}
               className="w-full p-3 mb-3 border border-gray-300 rounded-lg focus:outline-none"
             />
-
-            {/* Address Section */}
             <h3 className="text-lg font-semibold mb-3 text-pink-600">
               Address
             </h3>
@@ -143,9 +134,7 @@ const AddressSaver = ({
               onChange={handleChange}
               className="w-full p-3 mb-3 border border-gray-300 rounded-lg focus:outline-none"
             />
-
-            {/* City and State in the Same Row */}
-            <div className="flex gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
               <input
                 type="text"
                 name="city"
@@ -165,7 +154,6 @@ const AddressSaver = ({
                 readOnly
               />
             </div>
-
             <button
               onClick={handleSaveAddress}
               disabled={isFetching}

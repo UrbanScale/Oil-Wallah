@@ -2,7 +2,7 @@ import React from "react";
 import { FaSearch } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { CiShoppingCart } from "react-icons/ci";
-import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 function Navbar({
@@ -13,7 +13,6 @@ function Navbar({
   setAddressSaved,
 }) {
   const navigate = useNavigate();
-  const location = useLocation(); // Get current route
 
   // Handle Logout
   const handleLogout = () => {
@@ -49,53 +48,31 @@ function Navbar({
         </div>
 
         {/* Buttons */}
-        <div className="hidden md:flex gap-2">
-          {!isLoggedIn ? (
-            <>
-              {/* Login with Redirect */}
+        <div className="flex gap-2">
+          {/* Cart Button */}
+          <NavLink to="/cart">
+            <button className="text-white flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7] relative">
+              <CiShoppingCart className="text-2xl" />
+              {count > 0 && (
+                <span
+                  className="absolute -top-1 -right-2 bg-green-600 text-xs w-5 h-5 flex 
+                  justify-center items-center animate-bounce rounded-full text-white"
+                >
+                  {count}
+                </span>
+              )}
+              Cart
+            </button>
+          </NavLink>
 
-              {/* Cart Button */}
-              <NavLink to="/cart">
-                <button className="text-white flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7] relative">
-                  <CiShoppingCart className="text-2xl" />
-                  {count > 0 && (
-                    <span
-                      className="absolute -top-1 -right-2 bg-green-600 text-xs w-5 h-5 flex 
-                      justify-center items-center animate-bounce rounded-full text-white"
-                    >
-                      {count}
-                    </span>
-                  )}
-                  Cart
-                </button>
-              </NavLink>
-            </>
-          ) : (
-            <>
-              {/* Cart Button */}
-              <NavLink to="/cart">
-                <button className="text-white flex items-center gap-2 px-4 py-2 rounded-full bg-blue-600 hover:bg-[#1058B7] relative">
-                  <CiShoppingCart className="text-2xl" />
-                  {count > 0 && (
-                    <span
-                      className="absolute -top-1 -right-2 bg-green-600 text-xs w-5 h-5 flex 
-                      justify-center items-center animate-bounce rounded-full text-white"
-                    >
-                      {count}
-                    </span>
-                  )}
-                  Cart
-                </button>
-              </NavLink>
-
-              {/* Logout Button */}
-              <button
-                className="text-white px-4 py-2 rounded-full bg-red-500 hover:bg-red-600"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </>
+          {/* Logout Button (Only visible if logged in) */}
+          {isLoggedIn && (
+            <button
+              className="hidden md:block text-white px-4 py-2 rounded-full bg-red-500 hover:bg-red-600"
+              onClick={handleLogout}
+            >
+              Logout
+            </button>
           )}
         </div>
 
