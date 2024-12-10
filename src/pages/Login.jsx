@@ -1,32 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = ({ setIsLoggedIn }) => {
-  const [mobileNumber, setMobileNumber] = useState("");
+  const [email, setEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(120); // 2-minute timer
   const navigate = useNavigate();
 
   // Function to handle OTP sending
-  const handleSendOtp = () => {
-    if (mobileNumber.length === 10) {
-      alert("OTP sent successfully!");
-      setOtpSent(true);
+  const handleSendOtp = async () => {
+    if (email.includes("@")) {
+      try {
+        // Send OTP API call
+        const response = await fetch("http://localhost:5000/api/otp/send-otp", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert(data.message || "OTP sent successfully!");
+          setOtpSent(true);
+          setTimer(120); // Reset timer
+        } else {
+          alert(data.message || "Failed to send OTP. Please try again.");
+        }
+      } catch (error) {
+        console.error(error);
+        alert("Error sending OTP. Please try again.");
+      }
     } else {
-      alert("Enter a valid 10-digit mobile number.");
+      alert("Enter a valid email address.");
     }
   };
 
   // Function to handle OTP verification
-  const handleVerifyOtp = () => {
-    if (otp === "1234") {
-      alert("OTP verified successfully! You are logged in.");
-      setIsLoggedIn(true); // Set login state to true
-      navigate("/address");
-    } else {
-      alert("Invalid OTP. Please try again.");
+  const handleVerifyOtp = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/otp/verify-otp", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, otp }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        alert(data.message || "OTP verified successfully!");
+        setIsLoggedIn(true); // Set login state to true
+        navigate("/address");
+      } else {
+        alert(data.message || "Invalid OTP. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error verifying OTP. Please try again.");
     }
   };
+
+  // Countdown Timer
+  useEffect(() => {
+    if (otpSent && timer > 0) {
+      const interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [otpSent, timer]);
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-pink-50">
@@ -34,17 +80,13 @@ const LoginPage = ({ setIsLoggedIn }) => {
         <h2 className="text-2xl font-bold mb-4 text-center">Login or Signup</h2>
         {!otpSent ? (
           <>
-            <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden mb-4">
-              <span className="px-3 bg-gray-100 text-gray-600 font-medium">
-                +91
-              </span>
+            <div className="mb-4">
               <input
-                type="text"
-                className="flex-1 p-3 focus:outline-none"
-                placeholder="Enter your mobile number"
-                value={mobileNumber}
-                onChange={(e) => setMobileNumber(e.target.value)}
-                maxLength={10}
+                type="email"
+                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none"
+                placeholder="Enter your email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <button
@@ -56,10 +98,13 @@ const LoginPage = ({ setIsLoggedIn }) => {
           </>
         ) : (
           <>
+            <p className="mb-2 text-sm text-gray-600">
+              OTP has been sent to your email. Valid for 2 minutes.
+            </p>
             <input
               type="text"
               className="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none"
-              placeholder="Enter OTP (Default: 1234)"
+              placeholder="Enter OTP"
               value={otp}
               onChange={(e) => setOtp(e.target.value)}
             />
@@ -69,6 +114,13 @@ const LoginPage = ({ setIsLoggedIn }) => {
             >
               Verify OTP
             </button>
+            <p className="mt-4 text-sm text-gray-600">
+              Time remaining:{" "}
+              <span className="font-bold text-red-500">
+                {Math.floor(timer / 60)}:{timer % 60 < 10 ? "0" : ""}
+                {timer % 60}
+              </span>
+            </p>
           </>
         )}
         <p className="text-sm text-gray-600 mt-4">
